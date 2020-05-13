@@ -8,7 +8,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class BeanUtils {
+public class XmlUtils {
 
     /**
      * xml转换成bean，只支持JAXB
