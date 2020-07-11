@@ -7,13 +7,13 @@ import java.util.Collection;
  *
  * @author endy
  */
-public class PageResult<T> extends JsonResult<T> {
+public class PageResult extends JsonResult {
     /**
      * 数据的总条数
      */
     private long total;
 
-    public PageResult(boolean status, int code, String msg, T data, long total) {
+    public PageResult(boolean status, int code, String msg, Object data, long total) {
         super(status, code, msg, data);
         this.total = total;
     }
