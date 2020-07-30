@@ -5,18 +5,18 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 雪花算法生成id<p>
- * key为long类型，长度64位<p>
+ * id为long类型，长度64位<p>
  * 第一位为符号位，0<p>
  * 41位时间戳<p>
  * 10位workid, 0-1023<p>
  * 12位序列号，最大位4095<p>
  * <p>
- * 符号位    时间戳                                     workid  序列号
+ * 符号位    时间戳                                     workid   序列号
  * 0        00000000000000000000000000000000000000000 00000000 000000000000
  *
- * @author endy
+ * @author dean.lee
  */
-public final class SnowFlake implements KeyGenerator {
+public final class SnowFlake implements IdGenerator {
 
     private Logger log = LoggerFactory.getLogger(SnowFlake.class);
     //开始时间
@@ -33,7 +33,7 @@ public final class SnowFlake implements KeyGenerator {
     private static final long SEQUENCE_BIT = 12L;   //序列号占用位数
 
     //左移的位数
-    private static final long WORK_LEFT = SEQUENCE_BIT;    //groupid左移12位
+    private static final long WORK_LEFT = SEQUENCE_BIT;    //workid左移12位
     private static final long TIME_LEFT = WORK_BIT + SEQUENCE_BIT;   //时间戳左移22位
 
     //最大值，即二进制多少位1计算出的十进制
@@ -54,15 +54,15 @@ public final class SnowFlake implements KeyGenerator {
     }
 
     @Override
-    public synchronized long nextKey() {
+    public synchronized long nextId() {
         long currentTime = System.currentTimeMillis();
-        //避免程序运行中，回退系统时间。造成key重复
+        //避免程序运行中，回退系统时间。造成id重复
         if (currentTime < lastTime) {
             log.error("System time cannot be rollback!");
             throw new RuntimeException("System time cannot be rollback!");
         }
 
-        //如果当前时间和最后生成key的时间相同，则sequence+1，
+        //如果当前时间和最后生成id的时间相同，则sequence+1，
         //如果sequence+1后大于SEQUENCE_MAX，则sequence=0，当前时间等待下一毫秒
         if (currentTime == lastTime) {
             sequence = (sequence + 1) & SEQUENCE_MAX;
@@ -74,7 +74,7 @@ public final class SnowFlake implements KeyGenerator {
         } else {
             sequence = 0L;
         }
-        //更新最后生成key的时间为当前时间
+        //更新最后生成id的时间为当前时间
         lastTime = currentTime;
 
         return (currentTime - START_TIME) << TIME_LEFT  //时间戳部分
@@ -85,7 +85,7 @@ public final class SnowFlake implements KeyGenerator {
     public static void main(String[] args) {
         SnowFlake snowFlake = new SnowFlake(1023);
         for (int i = 0; i < 100; i++) {
-            System.out.println(snowFlake.nextKey());
+            System.out.println(snowFlake.nextId());
         }
     }
 }

@@ -3,7 +3,7 @@ package cn.inslee.utils;
 /**
  * 生成随机字符串的工具类
  *
- * @author endy
+ * @author dean.lee
  */
 public class RandomUtils {
 

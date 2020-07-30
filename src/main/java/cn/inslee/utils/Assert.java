@@ -1,5 +1,9 @@
 package cn.inslee.utils;
 
+/**
+ *
+ * @author dean.lee
+ */
 public class Assert {
 
     /**

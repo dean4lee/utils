@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 线程池工具类
  *
- * @author endy
+ * @author dean.lee
  */
 public class ThreadPoolUtils {
 
